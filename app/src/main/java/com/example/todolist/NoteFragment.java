@@ -16,9 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 
 public class NoteFragment extends Fragment {
     private static final String ARG_NOTE_ID = "note_id";
+    private static final String DIALOG_DATE = "DialogDate";
     private Note mNote;
     private EditText mTitleField;
     private Button mDateButton;
@@ -69,7 +71,14 @@ public class NoteFragment extends Fragment {
 
         mDateButton = (Button) v.findViewById(R.id.note_date);
         mDateButton.setText(mNote.getmDate().toString());
-        mDateButton.setEnabled(false);
+        mDateButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getFragmentManager();
+                DatePickerFragment dialog = new DatePickerFragment();
+                dialog.show(manager,DIALOG_DATE);
+            }
+        });
 
         mSolvedCheckBox = (CheckBox) v.findViewById(R.id.note_solved);
         mSolvedCheckBox.setChecked(mNote.ismSolved());
