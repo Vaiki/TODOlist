@@ -63,7 +63,7 @@ public class NoteListFragment extends Fragment {
         mDateTextView = (TextView) itemView.findViewById(R.id.note_date);
         mCheckBox=(CheckBox) itemView.findViewById(R.id.check_list);
         mStarImageView = (ImageView) itemView.findViewById(R.id.is_star);
-     //   if (mCheckBox.isChecked())mTitleTextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
+     //   if (mCheckBox.isChecked())mTitle TextView.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
 
     }
     public void bind(Note note){
