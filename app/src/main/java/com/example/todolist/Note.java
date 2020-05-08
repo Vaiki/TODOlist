@@ -29,9 +29,9 @@ public class Note {
         this.mTitle = mTitle;
     }
 
-    public CharSequence getmDate() {
-      // return mDate;
-       return android.text.format.DateFormat.format("HH:mm EEEE, dd.MM.yyyy",mDate);
+    public Date getmDate() {
+        return mDate;
+      // return android.text.format.DateFormat.format("HH:mm EEEE, dd.MM.yyyy",mDate);
     }
 
     public void setmDate(Date mDate) {
