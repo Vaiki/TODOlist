@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -15,6 +18,7 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,7 +27,14 @@ public class NoteListFragment extends Fragment {
     private RecyclerView mNoteRecyclerView;
     private NoteAdapter mAdapter;
     private int getPosition;
+    private boolean mSubtitleVisible;
+    private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     @Nullable
     @Override
@@ -31,14 +42,67 @@ public class NoteListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_note_list, container, false);
         mNoteRecyclerView = (RecyclerView) view.findViewById(R.id.note_recycler_view);
         mNoteRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        if (savedInstanceState != null){
+            mSubtitleVisible = savedInstanceState.getBoolean(SAVED_SUBTITLE_VISIBLE);
+        }
         updateUI();
         return view;
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(SAVED_SUBTITLE_VISIBLE,mSubtitleVisible);
+        
+    }
+
     @Override
     public void onResume(){ // переопределяем чтобы при возврате к списку из NoteFragment обновить содержимое списка в случае изменений
         super.onResume();
         updateUI();
+
     }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_note_list,menu);
+
+        MenuItem subtitleItem  = menu.findItem(R.id.show_subtitle);
+        if (mSubtitleVisible) {
+            subtitleItem.setTitle(R.string.hide_subtitle);
+        } else {subtitleItem.setTitle(R.string.show_subtitle);}
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.new_note:
+                Note note = new Note();
+                NoteLab.get(getActivity()).addNote(note);
+                Intent intent = NotePagerActivity.newIntent(getActivity(), note.getmId());
+                startActivity(intent);
+                return true;
+            case R.id.show_subtitle:
+                mSubtitleVisible = !mSubtitleVisible;
+                getActivity().invalidateOptionsMenu(); // создает меню заново
+                updateSubtitle();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+private void updateSubtitle(){ // отображение количества заметок на панели действий
+        NoteLab noteLab = NoteLab.get(getActivity());
+        int noteCount = noteLab.getNotes().size();
+        String subtitle = getString(R.string.subtitle_format,noteCount);
+        if (!mSubtitleVisible){
+            subtitle= null;
+        }
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.getSupportActionBar().setSubtitle(subtitle);//установка подзаголовка в панели инстументов
+}
     private void updateUI(){
         NoteLab noteLab = NoteLab.get(getActivity());// создаем синглетон
         List<Note> notes = noteLab.getNotes();// передаем все содержимое синглетоона в адаптер
@@ -49,6 +113,7 @@ public class NoteListFragment extends Fragment {
             mAdapter.notifyItemChanged(getPosition);// сообщает что текущая позиция изменена
 
         }
+        updateSubtitle();
     }
     private class NoteHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private TextView mTitleTextView;
