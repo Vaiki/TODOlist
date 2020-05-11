@@ -53,7 +53,7 @@ public class NoteListFragment extends Fragment {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean(SAVED_SUBTITLE_VISIBLE,mSubtitleVisible);
-        
+
     }
 
     @Override
@@ -110,6 +110,7 @@ private void updateSubtitle(){ // отображение количества з
         mAdapter = new NoteAdapter(notes);
         mNoteRecyclerView.setAdapter(mAdapter);}// метод связывает подготовленый список со списком
         else{
+            mAdapter.setNotes(notes);
             mAdapter.notifyItemChanged(getPosition);// сообщает что текущая позиция изменена
 
         }
@@ -171,6 +172,10 @@ private class NoteAdapter extends RecyclerView.Adapter<NoteHolder>{
     @Override
     public int getItemCount() {
         return mNotes.size();
+    }
+
+    public void setNotes(List<Note> notes){
+        mNotes = notes;
     }
 
         }

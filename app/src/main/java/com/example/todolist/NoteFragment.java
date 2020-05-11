@@ -48,6 +48,14 @@ public class NoteFragment extends Fragment {
         mNote = NoteLab.get(getActivity()).getNote(noteId);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        NoteLab.get(getActivity()).updateNote(mNote);
+
+
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

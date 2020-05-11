@@ -11,10 +11,13 @@ public class Note {
     private boolean mSolved;
 
     public Note() {
-        mId = UUID.randomUUID();
-        mDate = new Date();
+       this(UUID.randomUUID());
        // DateFormat.getDateInstance(DateFormat.LONG).format(mDate);
 
+    }
+    public Note(UUID id){
+        mId = id;
+        mDate = new Date();
     }
 
     public UUID getmId() {
