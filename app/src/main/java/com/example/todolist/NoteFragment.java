@@ -29,6 +29,7 @@ public class NoteFragment extends Fragment {
     private EditText mTitleField;
     private Button mDateButton;
     private CheckBox mSolvedCheckBox;
+    private ImageButton mDelete;
     public static NoteFragment newInstance(UUID noteId){// хранение аргументов для вызова требуемого(UUID) фрагмента с активити
         Bundle args = new Bundle(); // содержит пары key-value
         args.putSerializable(ARG_NOTE_ID,noteId); // добавление аргументов в пакет
@@ -93,6 +94,18 @@ public class NoteFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+
+            }
+        });
+        mDelete = (ImageButton) v.findViewById(R.id.delete_note);
+        mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            NoteLab.get(getActivity()).deleteNote(mNote);
+            
+
+
+
 
             }
         });

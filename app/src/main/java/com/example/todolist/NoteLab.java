@@ -56,6 +56,12 @@ public void addNote(Note n){
         return notes;
     }
 
+    public void deleteNote(Note note){
+        ContentValues values = getContentValues(note);
+        mDatabase.delete(NoteTable.NAME,note.getmId().toString(),null);
+
+    }
+
     public Note getNote(UUID id) {
         NoteCursorWrapper cursor = queryNotes(
                 NoteTable.Cols.UUID+ " = ?",
