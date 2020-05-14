@@ -102,6 +102,11 @@ public class NoteFragment extends Fragment {
             @Override
             public void onClick(View v) {
             NoteLab.get(getActivity()).deleteNote(mNote);
+                Intent intent = new Intent(getActivity(), NoteListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                try{getActivity().finish();}
+                catch (Exception e){Toast.makeText(getActivity(),"Error",Toast.LENGTH_LONG).show();}
             
 
 

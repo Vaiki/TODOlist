@@ -111,7 +111,7 @@ private void updateSubtitle(){ // отображение количества з
         mNoteRecyclerView.setAdapter(mAdapter);}// метод связывает подготовленый список со списком
         else{
             mAdapter.setNotes(notes);
-            mAdapter.notifyItemChanged(getPosition);// сообщает что текущая позиция изменена
+            mAdapter.notifyDataSetChanged();// сообщает что текущая позиция изменена
 
         }
         updateSubtitle();
@@ -173,6 +173,7 @@ private class NoteAdapter extends RecyclerView.Adapter<NoteHolder>{
     public int getItemCount() {
         return mNotes.size();
     }
+
 
     public void setNotes(List<Note> notes){
         mNotes = notes;

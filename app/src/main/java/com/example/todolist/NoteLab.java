@@ -57,8 +57,12 @@ public void addNote(Note n){
     }
 
     public void deleteNote(Note note){
-        ContentValues values = getContentValues(note);
-        mDatabase.delete(NoteTable.NAME,note.getmId().toString(),null);
+        String uuidString = note.getmId().toString();
+        mDatabase.delete(NoteTable.NAME,
+                NoteTable.Cols.UUID + " = ?",
+                new String[] {uuidString});
+        // ContentValues values = getContentValues(note);
+        //mDatabase.delete(NoteTable.NAME,note.getmId().toString(),null);
 
     }
 
